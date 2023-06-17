@@ -39,21 +39,28 @@ MariaDB [(none)]> flush privileges;
 pip3 install Django==4.2.2 mysqlclient==2.1.1
 
 Note: Install mysqlclient unsuccessful, check whether the dependency is installed.
-apt install mariadb-client 
-apt install libmariadb-dev 
-apt install libssl-dev 
-apt install libcrypto++-dev
+apt install mariadb-client libmariadb-dev libssl-dev libcrypto++-dev
 ```
 4. Enter "webDemo" project directory and execute migration instructions to create databases and tables
 ```
 python3 manage.py makemigrations
 python3 manage.py migrate
 ```
-5. Enter "webDemo" project directory and Run "python3 manage.py runserver" command to run the project
+5. Because the database is empty, there is no user during login. You need to insert a user information to log in to the page.
+```
+mysql App -e "insert into webApp_users values('1','admin','admin@example.com','admin');"
+
+Note: If you want to see the pager in effect, you can batch create users.
+for i in {01..99}; do mysql App -e "insert into webApp_users values('$i','user$i','user$i@example.com','user$i');"; done
+```
+6. Enter "webDemo" project directory to run the project
+```
+python3 manage.py runserver
+```
 
 # Test result
 ![login](vx_images/223211716236951.png)
-![users](vx_images/192732016246341.png)
- ![detail](vx_images/484731716257117.png)
- ![edit](vx_images/132891816249786.png)
- 
+![users](vx_images/58400517259975.png)
+![create](vx_images/220160617257579.png)
+ ![detail](vx_images/440410617255081.png)
+ ![edit](vx_images/117590717236322.png)
