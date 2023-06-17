@@ -1,0 +1,39 @@
+{% extends 'without_title.html' %}
+
+{% load static %}
+{% block login.css %}
+<link href="{% static 'css/login.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block content %}
+<div class="container vh-100">
+    <div class="row vh-100">
+        <div class="col-4 m-auto p-5 justify-content-center bg-white rounded">
+            <form method="post">
+                <p align="center">Login Page</p>
+                <div class="mb-3">
+                    {% if error %}
+                    {{ error }}
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label mb-1 text-black-50">Name:</label>
+                    <input type="text" class="form-control" name="name">
+                </div>
+                <div class="mb-4">
+                    <label class="form-label mb-1 text-black-50">Password:</label>
+                    <input type="password" class="form-control" name="password">
+                </div>
+                <div align="center">
+                    <input class="btn btn-success" type="submit" value="Submit">
+                    <input class="btn btn-warning" type="reset" value="Reset">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

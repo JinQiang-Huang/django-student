@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Users
+{% endblock %}
+
+{% block content %}
+
+<h1 align="center">{{ title }}</h1>
+
+<div class="mb-3">
+    {% if error %}
+    {{error}}
+    {% endif %}
+</div>
+
+<table class="table table-striped">
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>email</th>
+        <th>password</th>
+        <th>operation</th>
+    </tr>
+    {% for user in page.object_list %}
+    <tr>
+        <td>{{user.id}}</td>
+        <td><a href="{% url 'detail' user.id %}">{{user.name}}</a></td>
+        <td>{{user.email}}</td>
+        <td>{{user.password}}</td>
+        <td>
+            <a href="{% url 'edit' user.id %}">edit</a>
+            {# if user.name != 'admin' #}
+            <a href="{% url 'delete' user.id %}">delete</a>
+            {# endif #}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        {# 首页 #}
+        <li class="page-item">
+            <a class="page-link" href="/users/?page_num=1">
+                <span>首页</span>
+            </a>
+        </li>
+
+        {# 判断当前页是否有上一页(针对向左的箭头按钮) #}
+        {% if page.has_previous %}
+        <li class="page-item">
+            {# 如果有上一页就跳到上一页 #}
+            <a class="page-link" href="/users/?page_num={{ page.previous_page_number }}">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% else %}
+        {# 如果没有上一页,就将该按钮禁用 #}
+        <li class="page-item disabled">
+            <a class="page-link"><span aria-hidden="true">&laquo;</span></a>
+        </li>
+        {% endif %}
+
+        {# 从页码列表中循环取出页码与当前页做对比 #}
+        {% for foo in page_range %}
+        {% if current_page == foo %}
+        {# 如果是当前页,就将当前页按钮变成激活状态(蓝色) #}
+        <li class="page-item active" aria-current="page">
+            <a class="page-link" href="/users/?page_num={{ foo }}">{{ foo }}</a>
+        </li>
+        {% else %}
+        {# 如果不是则不变色 #}
+        <li class="page-item">
+            <a class="page-link" href="/users/?page_num={{ foo }}">{{ foo }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+
+        {# 判断但前页是否有下一页(针对向右的箭头按钮) #}
+        {% if page.has_next %}
+        <li class="page-item">
+            {# 如果有则跳转到下一页 #}
+            <a class="page-link" href="/users/?page_num={{ page.next_page_number }}">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% else %}
+        {# 没有下一页则将按钮禁用 #}
+        <li class="page-item disabled">
+            <a class="page-link"><span aria-hidden="true">&raquo;</span></a>
+        </li>
+        {% endif %}
+
+        {# 尾页 #}
+        <li class="page-item">
+            <a class="page-link" href="/users/?page_num={{ count_page }}">
+                <span>尾页</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+{% endblock %}
